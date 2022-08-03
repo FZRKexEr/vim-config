@@ -20,6 +20,7 @@ call plug#begin()
   Plug 'wincent/terminus'
   Plug 'thaerkh/vim-workspace'
   Plug 'yianwillis/vimcdoc'
+  Plug 'mhinz/vim-startify'
 call plug#end()
 
 autocmd VimEnter *
@@ -27,6 +28,7 @@ autocmd VimEnter *
   \|   PlugInstall --sync | q
   \| endif
 
+" core options
 filetype plugin on
 set encoding=UTF-8
 set fileformats=unix,dos,mac
@@ -47,11 +49,28 @@ set signcolumn=yes
 set hlsearch
 set wrap
 
-set termguicolors
 syntax on
-set background=dark
-colorscheme everforest
+
+" colorscheme - sonokai
+if has('termguicolors')
+  set termguicolors
+endif
+let g:sonokai_style = 'default'
+let g:sonokai_better_performance = 1
 colorscheme sonokai
+
+" startify
+let g:startify_custom_header =
+  \ startify#pad(split("
+  \██╗     ██╗███████╗███╗   ██╗██████╗ \n
+  \██║     ██║╚══███╔╝████╗  ██║██╔══██╗\n
+  \██║     ██║  ███╔╝ ██╔██╗ ██║██████╔╝\n
+  \██║     ██║ ███╔╝  ██║╚██╗██║██╔══██╗\n
+  \███████╗██║███████╗██║ ╚████║██████╔╝\n
+  \╚══════╝╚═╝╚══════╝╚═╝  ╚═══╝╚═════╝ \n
+  \", '\n'))
+
+let g:startify_files_number = 8
 
 " leader
 let mapleader = ' '

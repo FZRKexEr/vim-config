@@ -15,9 +15,9 @@ call plug#begin()
   Plug 'skywind3000/vim-dict'
   Plug 'dense-analysis/ale'
   Plug 'sainnhe/everforest'
+  Plug 'sainnhe/sonokai'
   Plug 'skywind3000/asyncrun.vim'
   Plug 'wincent/terminus'
-  Plug 'dracula/vim'
   Plug 'thaerkh/vim-workspace'
   Plug 'yianwillis/vimcdoc'
 call plug#end()
@@ -50,7 +50,8 @@ set wrap
 set termguicolors
 syntax on
 set background=dark
-colorscheme dracula
+colorscheme everforest
+colorscheme sonokai
 
 " leader
 let mapleader = ' '
@@ -75,36 +76,40 @@ endif
 nnoremap <space>r :call CodeRunner() <CR>
 
 function! CodeRunner()
-  silent execute 'w'
-  let l:run = 'AsyncRun -mode=term -pos=right -save=1 '
-  let l:cmd = {}
-  let l:cmd['cpp'] = " -DLOCAL -std=c++17 -Wall -O2 \"$(VIM_FILEPATH)\" && "
+  if (has('unix') || has('gui_running'))
+    silent execute 'w'
+    let l:run = 'AsyncRun -mode=term -pos=right -save=1 '
+    let l:cmd = {}
+    let l:cmd['cpp'] = " -DLOCAL -std=c++17 -Wall -O2 \"$(VIM_FILEPATH)\" && "
 
-  if executable('g++-11')
-    let l:cmd['cpp'] = 'g++-11' . l:cmd['cpp']
+    if executable('g++-11')
+      let l:cmd['cpp'] = 'g++-11' . l:cmd['cpp']
+    else
+      let l:cmd['cpp'] = 'g++' . l:cmd['cpp']
+    endif
+
+    if has('unix') 
+      let l:cmd['cpp'] = l:cmd['cpp'] . './a.out'
+    else
+      let l:cmd['cpp'] = l:cmd['cpp'] . 'a.exe'
+    endif
+    
+    " windows and terminal vim can't automatic cleanup (No solution has been found so far.)
+    if (has('nvim') || has('macvim'))
+      let l:cmd['cpp'] = "-post=silent\\ execute\\ '!rm\\ a.out' " . l:cmd['cpp']
+    endif
+
+    let l:cmd['python'] = 'python3 % '
+    let l:cmd['lua'] = 'lua % '
+    let l:cmd['sh'] = 'sh % '
+
+    if has_key(cmd, &filetype)
+      execute l:run . l:cmd[&filetype]
+    else
+      echo 'Unsupported language'
+    endif
   else
-    let l:cmd['cpp'] = 'g++' . l:cmd['cpp']
-  endif
-
-  if has('unix') 
-    let l:cmd['cpp'] = l:cmd['cpp'] . './a.out'
-  else
-    let l:cmd['cpp'] = l:cmd['cpp'] . 'a.exe'
-  endif
-  
-  " windows and terminal vim can't automatic cleanup (No solution has been found so far.)
-  if (has('nvim') || has('macvim'))
-    let l:cmd['cpp'] = "-post=silent\\ execute\\ '!rm\\ a.out' " . l:cmd['cpp']
-  endif
-
-  let l:cmd['python'] = 'python3 % '
-  let l:cmd['lua'] = 'lua % '
-  let l:cmd['sh'] = 'sh % '
-
-  if has_key(cmd, &filetype)
-    execute l:run . l:cmd[&filetype]
-  else
-    echo 'Unsupported language'
+    echo 'On windows, it can only be compiled and run in gvim'
   endif
 endfunction
 

@@ -6,12 +6,10 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin()
-  Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
   Plug 'aperezdc/vim-template'
   Plug 'skywind3000/vim-auto-popmenu'
   Plug 'skywind3000/vim-dict'
   Plug 'ryanoasis/vim-devicons'
-  Plug 'preservim/nerdtree'
   Plug 'dense-analysis/ale'
   Plug 'sainnhe/everforest'
   Plug 'skywind3000/asyncrun.vim'
@@ -48,7 +46,14 @@ let mapleader = ' '
 " macvim 
 if has('gui_macvim')
   autocmd GUIEnter * set vb t_vb=
-  set guifont=UbuntuMonoNerdFontCompleteM-Regular:h16
+endif
+
+if has('gui_running')
+    set guioptions-=T
+    set guioptions-=e
+    set t_Co=256
+    set guitablabel=%M\ %t
+    set guifont=UbuntuMonoNerdFontCompleteM-Regular:h16
 endif
 
 " Compile and run
@@ -96,12 +101,6 @@ nnoremap <space>q :bd<CR>
 
 " autosave
 let g:workspace_autosave_always = 1
-
-" file tree
-nnoremap <space>t :NERDTreeToggle<CR>
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
 " auto popmenu
 let g:apc_enable_ft = {'text':1, 'markdown':1, 'cpp':1, 'python':1}

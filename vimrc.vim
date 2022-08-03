@@ -1,11 +1,20 @@
 let g:plug_url_format='https://ghproxy.com/https://github.com/%s'
 
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent execute '!curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://ghproxy.com/https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall | source ~/.vimrc
+if(has("win32") || has("win64") || has("win95") || has("win16"))
+  if empty(glob('$HOME/vimfiles/autoload/plug.vim'))
+    silent execute '!iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim | ni $HOME/vimfiles/autoload/plug.vim -Force'
+    autocmd VimEnter * PlugInstall | source $HOME/_vimrc
+  endif
+else
+  if empty(glob('~/.vim/autoload/plug.vim'))
+    silent execute '!curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://ghproxy.com/https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    autocmd VimEnter * PlugInstall | source ~/.vimrc
+  endif
 endif
 
 call plug#begin()
+  Plug 'lambdalisue/fern-hijack.vim'
+  Plug 'lambdalisue/fern.vim'
   Plug 'aperezdc/vim-template'
   Plug 'skywind3000/vim-auto-popmenu'
   Plug 'skywind3000/vim-dict'
@@ -112,3 +121,6 @@ let g:templates_no_builtin_templates=1
 let g:templates_global_name_prefix='template'
 let g:templates_name_prefix='template.local'
 let g:templates_detect_git=1
+
+" tree
+nnoremap <space>t :Fern . -drawer -toggle<CR>

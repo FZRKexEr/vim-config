@@ -1,11 +1,6 @@
 let g:plug_url_format='https://ghproxy.com/https://github.com/%s'
 
-if(has("win32") || has("win64") || has("win95") || has("win16"))
-  if empty(glob('$HOME/vimfiles/autoload/plug.vim'))
-    silent execute '!iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim | ni $HOME/vimfiles/autoload/plug.vim -Force'
-    autocmd VimEnter * PlugInstall | source $HOME/_vimrc
-  endif
-else
+if(has('mac') || has('unix'))
   if empty(glob('~/.vim/autoload/plug.vim'))
     silent execute '!curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://ghproxy.com/https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
     autocmd VimEnter * PlugInstall | source ~/.vimrc
@@ -26,6 +21,11 @@ call plug#begin()
   Plug 'thaerkh/vim-workspace'
   Plug 'yianwillis/vimcdoc'
 call plug#end()
+
+autocmd VimEnter *
+  \  if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \|   PlugInstall --sync | q
+  \| endif
 
 filetype plugin on
 set encoding=UTF-8

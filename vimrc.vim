@@ -39,7 +39,7 @@ set expandtab
 
 set cindent
 set clipboard=unnamed
-set whichwrap+=<,>,h,l
+set whichwrap+=<,>
 set backspace=eol,indent
 
 set number

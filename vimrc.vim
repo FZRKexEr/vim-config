@@ -43,17 +43,16 @@ colorscheme everforest
 " leader
 let mapleader = ' '
 
-" macvim 
+" macvim and gvim
 if has('gui_macvim')
   autocmd GUIEnter * set vb t_vb=
-endif
-
-if has('gui_running')
-    set guioptions-=T
-    set guioptions-=e
-    set t_Co=256
-    set guitablabel=%M\ %t
-    set guifont=UbuntuMonoNerdFontCompleteM-Regular:h16
+  set guifont=UbuntuMono\ Nerd\ Font\ Mono:h16
+elseif has('gui_running')
+  set guioptions-=T
+  set guioptions-=e
+  set t_Co=256
+  set guitablabel=%M\ %t
+  set guifont=UbuntuMono\ Nerd\ Font\ Mono\ 16
 endif
 
 " Compile and run
@@ -110,8 +109,6 @@ set shortmess+=c
 
 " template
 let g:templates_no_builtin_templates=1
-" let g:templates_directory='$HOME/.config/nvim/template'
 let g:templates_global_name_prefix='template'
 let g:templates_name_prefix='template.local'
 let g:templates_detect_git=1
-

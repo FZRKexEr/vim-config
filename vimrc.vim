@@ -63,7 +63,11 @@ elseif has('gui_running')
   set guioptions-=e
   set t_Co=256
   set guitablabel=%M\ %t
-  set guifont=UbuntuMono\ Nerd\ Font\ Mono\ 16
+  if has('unix')
+    set guifont=UbuntuMono\ Nerd\ Font\ Mono\ 16
+  else
+    set guifont=UbuntuMono_Nerd_Font_Mono:h16:cANSI:qDRAFT
+  endif
 endif
 
 " Compile and run

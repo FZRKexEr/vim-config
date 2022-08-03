@@ -13,11 +13,11 @@ call plug#begin()
   Plug 'aperezdc/vim-template'
   Plug 'skywind3000/vim-auto-popmenu'
   Plug 'skywind3000/vim-dict'
-  Plug 'ryanoasis/vim-devicons'
   Plug 'dense-analysis/ale'
   Plug 'sainnhe/everforest'
   Plug 'skywind3000/asyncrun.vim'
   Plug 'wincent/terminus'
+  Plug 'dracula/vim'
   Plug 'thaerkh/vim-workspace'
   Plug 'yianwillis/vimcdoc'
 call plug#end()
@@ -50,7 +50,8 @@ set wrap
 set termguicolors
 syntax on
 set background=dark
-colorscheme everforest
+colorscheme dracula
+
 " leader
 let mapleader = ' '
 
@@ -73,18 +74,29 @@ endif
 " Compile and run
 nnoremap <space>r :call CodeRunner() <CR>
 
-function! CodeRunner() 
+function! CodeRunner()
   silent execute 'w'
   let l:run = 'AsyncRun -mode=term -pos=right -save=1 '
   let l:cmd = {}
+  let l:cmd['cpp'] = " -DLOCAL -std=c++17 -Wall -O2 \"$(VIM_FILEPATH)\" && "
 
   if executable('g++-11')
-    let l:cmd['cpp'] = "g++-11 -DLOCAL -std=c++17 -Wall -O2 \"$(VIM_FILEPATH)\" && ./a.out"
+    let l:cmd['cpp'] = 'g++-11' . l:cmd['cpp']
   else
-    let l:cmd['cpp'] = "g++ -DLOCAL -std=c++17 -Wall -O2 \"$(VIM_FILEPATH)\" && ./a.out"
+    let l:cmd['cpp'] = 'g++' . l:cmd['cpp']
   endif
 
-  let l:cmd['cpp'] = "-post=silent\\ execute\\ '!rm\\ a.out' " . l:cmd['cpp']
+  if has('unix') 
+    let l:cmd['cpp'] = l:cmd['cpp'] . './a.out'
+  else
+    let l:cmd['cpp'] = l:cmd['cpp'] . 'a.exe'
+  endif
+  
+  " windows and terminal vim can't automatic cleanup (No solution has been found so far.)
+  if (has('nvim') || has('macvim'))
+    let l:cmd['cpp'] = "-post=silent\\ execute\\ '!rm\\ a.out' " . l:cmd['cpp']
+  endif
+
   let l:cmd['python'] = 'python3 % '
   let l:cmd['lua'] = 'lua % '
   let l:cmd['sh'] = 'sh % '

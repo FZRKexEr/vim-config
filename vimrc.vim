@@ -8,6 +8,7 @@ if(has('mac') || has('unix'))
 endif
 
 call plug#begin()
+  Plug 'skywind3000/vim-terminal-help'
   Plug 'lambdalisue/fern-hijack.vim'
   Plug 'lambdalisue/fern.vim'
   Plug 'aperezdc/vim-template'
@@ -21,6 +22,7 @@ call plug#begin()
   Plug 'thaerkh/vim-workspace'
   Plug 'yianwillis/vimcdoc'
   Plug 'mhinz/vim-startify'
+  Plug 'zefei/vim-wintabs'
 call plug#end()
 
 autocmd VimEnter *
@@ -51,6 +53,12 @@ set wrap
 
 syntax on
 
+" terminal help
+let g:terminal_key = '<space>h'
+let g:terminal_edit = 'drop'
+let g:terminal_kill = term
+let g:terminal_list = 0
+
 " colorscheme - sonokai
 if has('termguicolors')
   set termguicolors
@@ -60,17 +68,62 @@ let g:sonokai_better_performance = 1
 colorscheme sonokai
 
 " startify
+
+if localtime() % 2 == 0
+  let g:startify_custom_footer =
+    \ startify#pad(split("
+    \██╗     ██╗███████╗███╗   ██╗██████╗ \n
+    \██║     ██║╚══███╔╝████╗  ██║██╔══██╗\n
+    \██║     ██║  ███╔╝ ██╔██╗ ██║██████╔╝\n
+    \██║     ██║ ███╔╝  ██║╚██╗██║██╔══██╗\n
+    \███████╗██║███████╗██║ ╚████║██████╔╝\n
+    \╚══════╝╚═╝╚══════╝╚═╝  ╚═══╝╚═════╝ \n
+    \", '\n'))
+else
+  let g:startify_custom_footer =
+    \ startify#pad(split("
+    \██╗   ██╗██╗███╗   ███╗\n
+    \██║   ██║██║████╗ ████║\n
+    \██║   ██║██║██╔████╔██║\n
+    \╚██╗ ██╔╝██║██║╚██╔╝██║\n
+    \ ╚████╔╝ ██║██║ ╚═╝ ██║\n
+    \  ╚═══╝  ╚═╝╚═╝     ╚═╝\n
+    \", '\n'))
+endif
+
 let g:startify_custom_header =
   \ startify#pad(split("
-  \██╗     ██╗███████╗███╗   ██╗██████╗ \n
-  \██║     ██║╚══███╔╝████╗  ██║██╔══██╗\n
-  \██║     ██║  ███╔╝ ██╔██╗ ██║██████╔╝\n
-  \██║     ██║ ███╔╝  ██║╚██╗██║██╔══██╗\n
-  \███████╗██║███████╗██║ ╚████║██████╔╝\n
-  \╚══════╝╚═╝╚══════╝╚═╝  ╚═══╝╚═════╝ \n
+  \⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣠⣾⣴⠇⢠⡏⢀⣿⣿⣥⣦⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
+  \⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡜⣰⣿⣿⣿⣟⠇⣾⡥⣸⣿⣿⣿⣿⣯⣾⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
+  \⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⣽⣿⣿⣿⣿⣿⢰⣿⣿⣿⣿⣿⣿⣿⣿⣾⣯⡀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
+  \⠀⠶⠀⠀⠀⠀⠀⢀⣄⣾⣿⣿⣿⣿⣿⣿⣿⣿⣾⣿⣿⣿⣿⣿⣿⣿⠻⣿⣿⣷⣿⣾⣷⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
+  \⠀⠀⠀⠀⠀⠀⠠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
+  \⢰⣄⠀⠀⠀⠀⣀⢿⣿⣿⣿⣿⣿⣿⣿⣟⣼⡀⠋⠛⠛⠿⡿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
+  \⠈⠉⡀⠀⠀⠀⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣶⣤⣠⣶⣶⣇⣉⣿⣿⣿⣿⣿⣿⣿⠟⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
+  \⠀⣴⡜⠞⢀⠀⣆⠈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⠿⣿⣿⣿⣿⣿⣿⡿⣽⣷⣶⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
+  \⣇⠸⣷⠀⣼⠃⣿⣷⡄⠻⣿⣿⣅⠉⠉⠙⠻⣿⠿⠿⠇⠀⠀⠀⣸⣿⣿⡿⠋⠁⡠⠾⠿⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
+  \⠉⠀⠀⠀⠉⠛⢿⣿⣿⣄⠈⠛⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠃⠠⠉⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
+  \⣄⣠⠀⠀⠀⠀⠘⣿⣿⣿⣦⠀⢰⣾⣿⣿⣿⣷⣶⣴⣶⣀⣽⣶⠖⠢⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⢀⠄⡄⠀⠀⠀⠀\n
+  \⣿⣿⣧⡄⠀⠀⠀⣿⣿⣿⣿⡆⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⢀⡼⣠⡄⠀⠀⠀⠈⠁⠀⠀⠀⠀⠠⠊⠀⠀⠀⠀⠀\n
+  \⣿⣿⣿⣯⠀⠀⠀⠸⣿⣿⣿⣷⣌⠻⢿⣿⣿⣿⣿⣿⡿⠟⡫⠴⣫⣶⣿⡇⠀⠄⠐⠠⠖⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
+  \⣿⣿⣿⠛⠛⠓⠦⠀⣿⣿⣿⣿⣿⣷⣶⣤⣤⣭⣭⣤⣤⣤⣶⣿⣿⣿⣿⡇⠀⠀⠀⣰⣄⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
+  \⡿⢟⣧⣼⣴⣶⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠗⠀⢀⣾⣿⣿⣿⣶⣤⡄⣀⡀⠀⠀⠀⠀⠀\n
+  \⣶⣿⣿⣿⣿⣿⣿⣿⣿⡇⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠧⠈⠀⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⣿⣷⣦⡀⠀\n
+  \⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠈⠙⢿⣿⣿⣿⣿⣿⣿⣿⣧⣧⡀⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣟⣿⣿⣿⣿⣿⣿⣷\n
+  \⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠉⠛⢿⣿⣿⣿⣿⣿⣿⠃⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣏⢹⣿⣿⣿⣿⣿⣿\n
+  \⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⣟⡋⣩⡵⢂⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⡿⠫⠉⢉⣿⣿\n
   \", '\n'))
 
-let g:startify_files_number = 8
+let g:startify_files_number = 0
+let g:startify_bookmarks = [
+      \'~/desktop/vimrc/vim-config/vimrc.vim',
+      \'~/desktop/codelife/codeforces/',
+      \'~/desktop/codelife/atcoder/',
+      \'~/desktop/codelife/uestc/2022暑假/',
+      \'~/desktop/code-library/',
+      \]
+autocmd User Startified nmap <buffer> l <plug>(startify-open-buffers)
+
 
 " leader
 let mapleader = ' '
@@ -85,9 +138,9 @@ elseif has('gui_running')
   set t_Co=256
   set guitablabel=%M\ %t
   if has('unix')
-    set guifont=UbuntuMono\ Nerd\ Font\ Mono\ 16
+    set guifont=UbuntuMono\ Nerd\ Font\ Mono\ 18
   else
-    set guifont=UbuntuMono_Nerd_Font_Mono:h16:cANSI:qDRAFT
+    set guifont=UbuntuMono_Nerd_Font_Mono:h18:cANSI:qDRAFT
   endif
 endif
 
@@ -148,6 +201,10 @@ let g:ale_cpp_cppcheck_options = '-DLOCAL -std=c++17 -Wall -O2'
 nnoremap <S-l> :bn<CR>
 nnoremap <S-h> :bp<CR>
 nnoremap <space>q :bd<CR>
+nnoremap <c-h> <c-w>h
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-l> <c-w>l
 
 " autosave
 let g:workspace_autosave_always = 1
@@ -166,3 +223,8 @@ let g:templates_detect_git=1
 
 " tree
 nnoremap <space>t :Fern . -drawer -toggle<CR>
+
+" wintab
+let g:wintabs_ui_sep_leftmost = '|'
+let g:wintabs_ui_sep_inbetween = '|'
+let g:wintabs_ui_sep_rightmost = '|'

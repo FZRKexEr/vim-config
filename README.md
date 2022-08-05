@@ -12,4 +12,3 @@ Strive to simplify VIM configuration. It covers most of the functions required b
 Copy [vimrc.vim](./vimrc.vim) to `.vimrc` (macOS/Linux) or `_vimrc` (Windows).
 
 `vim-plug` needs to be installed manually on Windows.
-

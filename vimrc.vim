@@ -8,21 +8,15 @@ if(has('mac') || has('unix'))
 endif
 
 call plug#begin()
-"  Plug 'skywind3000/vim-terminal-help'
-  Plug 'lambdalisue/fern-hijack.vim'
-  Plug 'lambdalisue/fern.vim'
+  Plug 'thaerkh/vim-workspace'
   Plug 'aperezdc/vim-template'
   Plug 'skywind3000/vim-auto-popmenu'
   Plug 'skywind3000/vim-dict'
   Plug 'dense-analysis/ale'
-  Plug 'sainnhe/everforest'
   Plug 'sainnhe/sonokai'
   Plug 'skywind3000/asyncrun.vim'
   Plug 'wincent/terminus'
-  Plug 'thaerkh/vim-workspace'
   Plug 'yianwillis/vimcdoc'
-  Plug 'mhinz/vim-startify'
-  Plug 'zefei/vim-wintabs'
 call plug#end()
 
 autocmd VimEnter *
@@ -52,11 +46,7 @@ set hlsearch
 set wrap
 
 syntax on
-
-" terminal help
-let g:terminal_key = '<space>h'
-"let g:terminal_kill = term
-let g:terminal_list = 0
+let mapleader = ' '
 
 " colorscheme - sonokai
 if has('termguicolors')
@@ -66,66 +56,6 @@ let g:sonokai_style = 'default'
 let g:sonokai_better_performance = 1
 colorscheme sonokai
 
-" startify
-
-if localtime() % 2 == 0
-  let g:startify_custom_footer =
-    \ startify#pad(split("
-    \██╗     ██╗███████╗███╗   ██╗██████╗ \n
-    \██║     ██║╚══███╔╝████╗  ██║██╔══██╗\n
-    \██║     ██║  ███╔╝ ██╔██╗ ██║██████╔╝\n
-    \██║     ██║ ███╔╝  ██║╚██╗██║██╔══██╗\n
-    \███████╗██║███████╗██║ ╚████║██████╔╝\n
-    \╚══════╝╚═╝╚══════╝╚═╝  ╚═══╝╚═════╝ \n
-    \", '\n'))
-else
-  let g:startify_custom_footer =
-    \ startify#pad(split("
-    \██╗   ██╗██╗███╗   ███╗\n
-    \██║   ██║██║████╗ ████║\n
-    \██║   ██║██║██╔████╔██║\n
-    \╚██╗ ██╔╝██║██║╚██╔╝██║\n
-    \ ╚████╔╝ ██║██║ ╚═╝ ██║\n
-    \  ╚═══╝  ╚═╝╚═╝     ╚═╝\n
-    \", '\n'))
-endif
-
-let g:startify_custom_header =
-  \ startify#pad(split("
-  \⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣠⣾⣴⠇⢠⡏⢀⣿⣿⣥⣦⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
-  \⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡜⣰⣿⣿⣿⣟⠇⣾⡥⣸⣿⣿⣿⣿⣯⣾⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
-  \⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⣽⣿⣿⣿⣿⣿⢰⣿⣿⣿⣿⣿⣿⣿⣿⣾⣯⡀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
-  \⠀⠶⠀⠀⠀⠀⠀⢀⣄⣾⣿⣿⣿⣿⣿⣿⣿⣿⣾⣿⣿⣿⣿⣿⣿⣿⠻⣿⣿⣷⣿⣾⣷⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
-  \⠀⠀⠀⠀⠀⠀⠠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
-  \⢰⣄⠀⠀⠀⠀⣀⢿⣿⣿⣿⣿⣿⣿⣿⣟⣼⡀⠋⠛⠛⠿⡿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
-  \⠈⠉⡀⠀⠀⠀⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣶⣤⣠⣶⣶⣇⣉⣿⣿⣿⣿⣿⣿⣿⠟⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
-  \⠀⣴⡜⠞⢀⠀⣆⠈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⠿⣿⣿⣿⣿⣿⣿⡿⣽⣷⣶⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
-  \⣇⠸⣷⠀⣼⠃⣿⣷⡄⠻⣿⣿⣅⠉⠉⠙⠻⣿⠿⠿⠇⠀⠀⠀⣸⣿⣿⡿⠋⠁⡠⠾⠿⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
-  \⠉⠀⠀⠀⠉⠛⢿⣿⣿⣄⠈⠛⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠃⠠⠉⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
-  \⣄⣠⠀⠀⠀⠀⠘⣿⣿⣿⣦⠀⢰⣾⣿⣿⣿⣷⣶⣴⣶⣀⣽⣶⠖⠢⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⢀⠄⡄⠀⠀⠀⠀\n
-  \⣿⣿⣧⡄⠀⠀⠀⣿⣿⣿⣿⡆⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⢀⡼⣠⡄⠀⠀⠀⠈⠁⠀⠀⠀⠀⠠⠊⠀⠀⠀⠀⠀\n
-  \⣿⣿⣿⣯⠀⠀⠀⠸⣿⣿⣿⣷⣌⠻⢿⣿⣿⣿⣿⣿⡿⠟⡫⠴⣫⣶⣿⡇⠀⠄⠐⠠⠖⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
-  \⣿⣿⣿⠛⠛⠓⠦⠀⣿⣿⣿⣿⣿⣷⣶⣤⣤⣭⣭⣤⣤⣤⣶⣿⣿⣿⣿⡇⠀⠀⠀⣰⣄⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n
-  \⡿⢟⣧⣼⣴⣶⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠗⠀⢀⣾⣿⣿⣿⣶⣤⡄⣀⡀⠀⠀⠀⠀⠀\n
-  \⣶⣿⣿⣿⣿⣿⣿⣿⣿⡇⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠧⠈⠀⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⣿⣷⣦⡀⠀\n
-  \⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠈⠙⢿⣿⣿⣿⣿⣿⣿⣿⣧⣧⡀⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣟⣿⣿⣿⣿⣿⣿⣷\n
-  \⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠉⠛⢿⣿⣿⣿⣿⣿⣿⠃⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣏⢹⣿⣿⣿⣿⣿⣿\n
-  \⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⣟⡋⣩⡵⢂⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⡿⠫⠉⢉⣿⣿\n
-  \", '\n'))
-
-let g:startify_files_number = 0
-let g:startify_bookmarks = [
-      \'~/desktop/vimrc/vim-config/vimrc.vim',
-      \'~/desktop/codelife/codeforces/',
-      \'~/desktop/codelife/atcoder/',
-      \'~/desktop/codelife/uestc/2022暑假/',
-      \'~/desktop/code-library/',
-      \]
-autocmd User Startified nmap <buffer> l <plug>(startify-open-buffers)
-
-
-" leader
-let mapleader = ' '
 
 " macvim and gvim
 if has('gui_macvim')
@@ -210,7 +140,7 @@ let g:workspace_autosave_always = 1
 
 " auto popmenu
 let g:apc_enable_ft = {'text':1, 'markdown':1, 'cpp':1, 'python':1}
-set cpt=.,k,w,b
+set complete=.,k,w,b
 set completeopt=menu,menuone,noselect
 set shortmess+=c
 
@@ -219,11 +149,3 @@ let g:templates_no_builtin_templates=1
 let g:templates_global_name_prefix='template'
 let g:templates_name_prefix='template.local'
 let g:templates_detect_git=1
-
-" tree
-nnoremap <space>t :Fern . -drawer -toggle<CR>
-
-" wintab
-let g:wintabs_ui_sep_leftmost = '|'
-let g:wintabs_ui_sep_inbetween = '|'
-let g:wintabs_ui_sep_rightmost = '|'

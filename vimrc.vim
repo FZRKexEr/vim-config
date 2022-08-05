@@ -55,8 +55,7 @@ syntax on
 
 " terminal help
 let g:terminal_key = '<space>h'
-let g:terminal_edit = 'drop'
-let g:terminal_kill = term
+"let g:terminal_kill = term
 let g:terminal_list = 0
 
 " colorscheme - sonokai
@@ -160,7 +159,7 @@ function! CodeRunner()
       let l:cmd['cpp'] = 'g++' . l:cmd['cpp']
     endif
 
-    if has('unix') 
+    if has('unix')
       let l:cmd['cpp'] = l:cmd['cpp'] . './a.out'
     else
       let l:cmd['cpp'] = l:cmd['cpp'] . 'a.exe'

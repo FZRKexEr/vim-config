@@ -8,7 +8,7 @@ if(has('mac') || has('unix'))
 endif
 
 call plug#begin()
-  Plug 'skywind3000/vim-terminal-help'
+"  Plug 'skywind3000/vim-terminal-help'
   Plug 'lambdalisue/fern-hijack.vim'
   Plug 'lambdalisue/fern.vim'
   Plug 'aperezdc/vim-template'
@@ -166,7 +166,7 @@ function! CodeRunner()
     endif
     
     " windows and terminal vim can't automatic cleanup (No solution has been found so far.)
-    if (has('nvim') || has('macvim'))
+    if (has('nvim') || has('gui_macvim'))
       let l:cmd['cpp'] = "-post=silent\\ execute\\ '!rm\\ a.out' " . l:cmd['cpp']
     endif
 

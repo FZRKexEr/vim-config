@@ -117,6 +117,78 @@ function! CodeRunner()
   endif
 endfunction
 
+if executable('oj')
+
+  nnoremap <space>t :call TestSamples() <CR>
+
+  function! s:ReadProblemURLFromCurrentBuffer()
+    let l:lines = getline(0, line('$'))
+    for l:line in l:lines
+      let l:record = split(l:line, ' ')
+      for l:r in l:record
+        let l:url = matchstr(r, '^\(http\|https\):.*$')
+        if l:url !=? ''
+          return l:url
+        endif
+      endfor
+    endfor
+    return ''
+  endfunction
+  
+  function! s:MakeSampleDLCommand(url)
+    let l:cur_buf_dir = expand('%:h')
+    let l:target_dir = l:cur_buf_dir . '/test'
+    let l:dl_command = printf('oj download -d %s %s', l:target_dir, a:url)
+    return l:dl_command
+  endfunction
+  function! s:DownloadSamples(url)
+    let l:command = s:MakeSampleDLCommand(a:url)
+    return l:command
+"    call execute("AsyncRun -mode=term -pos=right -save=1 " . l:command)
+  endfunction
+  
+"  command! -nargs=0 DownloadSamples :call s:DownloadSamples(s:ReadProblemURLFromCurrentBuffer())
+  
+  function! s:MakeTestSamplesCommand()
+    let l:cur_buf_cpp = expand('%')
+    let l:cur_buf_dir = expand('%:h')
+    let l:sample_file_dir = l:cur_buf_dir . '/test'
+    let l:compiler = 'g++'
+    if executable('g++-11')
+      let l:compiler = 'g++-11'
+    endif
+    let l:test_command = printf(l:compiler . ' -DONLINE_JUDGE -DLOCAL_TEST %s && oj test -d %s -t 4',l:cur_buf_cpp, l:sample_file_dir)
+    return l:test_command
+  endfunction
+
+  function! TestSamples() " s:TestSamples()
+    let l:cur_buf_dir = expand('%:h')
+    let l:target_sample1 = l:cur_buf_dir . '/test/sample-1.in'
+    let l:target_sample2 = l:cur_buf_dir . '/test/random-000.in'
+    if (filereadable(target_sample1) == 0) && (filereadable(target_sample2) == 0)
+      let l:command = s:DownloadSamples(s:ReadProblemURLFromCurrentBuffer()) . ' && ' . s:MakeTestSamplesCommand()
+      call execute("AsyncRun -post=silent\\ execute\\ '!rm\\ a.out' -mode=term -pos=right -save=1 " . l:command)
+    else
+      let l:command = s:MakeTestSamplesCommand()
+      call execute("AsyncRun -post=silent\\ execute\\ '!rm\\ a.out' -mode=term -pos=right -save=1 " . l:command)
+    endif
+  endfunction
+  
+"  command! -nargs=0 TestSamples :call s:TestSamples()
+  
+  function! s:MakeSubmitCommand(url)
+    let l:cur_buf_cpp = expand('%')
+    let l:submit_command = printf('oj submit -y %s %s', a:url, l:cur_buf_cpp)
+    return l:submit_command
+  endfunction
+  function! s:SubmitCode(url)
+    let l:command = s:MakeSubmitCommand(a:url)
+    call execute("AsyncRun -post=silent\\ execute\\ '!rm\\ a.out' -mode=term -pos=right -save=1 " . l:command)
+  endfunction
+  
+  command! -nargs=0 SubmitCode :call s:SubmitCode(s:ReadProblemURLFromCurrentBuffer())
+endif
+
 " Ale
 let g:ale_linters = {'cpp': ['cc']}
 
@@ -155,7 +227,7 @@ let g:templates_detect_git=1
 
 " startify
 
-let g:startify_files_number = 10
+let g:startify_files_number = 5
 let g:startify_lists = [
        \ { 'type': 'files',     'header': ['   MRU']            },
        \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
@@ -216,7 +288,7 @@ let g:startify_custom_header_quotes = [
       \ ['“我做不出酒柜，汽车上的油过滤器也换不了，邮票都贴不正，电话号也时常按错。不过有创意的鸡尾酒倒配出了几种，评价也不错。”', '——《国境以南 太阳以西》'],
       \ ['算不上多么幸福的时代，又有很多欲望得不到满足，更年轻、更饥渴、更孤独，但我确实单纯，就像一清见底的池水。当时听的音乐的每一音节、看的书的每一行都好像深深沁入肺腑，神经如楔子一样尖锐，眼里的光尖刻得足以刺穿对方。就是那么一个年代。', '——《国境以南 太阳以西》'],
       \ ['“岛本，还能见到你？”“大概能吧。”说着，她嘴唇上漾出淡淡的笑意，犹如无风的日子里静静升起的一小缕烟。“大概。”', '——《国境以南 太阳以西》'],
-      \ ['我在其旁边坐下，闭起眼睛。音乐声渐次远离，剩下我孑身一人。柔软的夜幕中，雨仍在无声无息地下着。'],
+      \ ['我在其旁边坐下，闭起眼睛。音乐声渐次远离，剩下我孑身一人。柔软的夜幕中，雨仍在无声无息地下着。', '——《国境以南 太阳以西》'],
       \ ['我这个人对于她并非那么可贵的存在。想到这里，我一阵难受，就好像心里开了一个小洞。她不该把那样的话说出口，某种话语是应当永远留在心里的。', '——《国境以南 太阳以西》'],
       \ [' “为什么不看新小说？”“怕是不愿意失望吧。看无聊的书，觉得像是白白浪费时间，又失望得很。过去不然。时间多的是，看无聊的书也总觉得有所收获。就那样。如今不一样，认为纯属浪费时间。也许是上年纪的关系。”', '——《国境以南 太阳以西》'],
       \ ['“嗳，初君，为什么这里所有的鸡尾酒都比别处的好喝呢？”“因为付出了相应的努力，不努力不可能如愿以偿。”', '——《国境以南 太阳以西》'],

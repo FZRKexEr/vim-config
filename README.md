@@ -1,13 +1,23 @@
 # vim-config
 
-Strive to simplify VIM configuration. It covers most of the functions required by competitive programming.
+Single file VIM configuration. It covers most of the functions required by competitive programming.
 
 - C++ syntax check
 - C++ compile and run
-- File management
-- Data generation and testing
+- Submit code to AtCoder
+- Automatic completion
+- Template
 
-# Install 
+And some things I like.
+
+- Customized startup interface
+- Excerpts from Haruki Murakami's book
+
+# The Basic
+
+VIM configuration without plug-ins (Windows GVIM only). Just copy [basic.vim](./basic.vim).
+
+# Install
 
 Copy [vimrc.vim](./vimrc.vim) to `.vimrc` (macOS/Linux) or `_vimrc` (Windows).
 

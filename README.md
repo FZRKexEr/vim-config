@@ -13,11 +13,11 @@ And some things I like.
 - Customized startup interface
 - Excerpts from Haruki Murakami's book
 
-# The Basic
+## The Basic
 
 VIM configuration without plug-ins (Windows GVIM only). Just copy [basic.vim](./basic.vim).
 
-# Install
+## Install
 
 Copy [vimrc.vim](./vimrc.vim) to `.vimrc` (macOS/Linux) or `_vimrc` (Windows).
 

@@ -26,6 +26,6 @@ Copy [vimrc.vim](./vimrc.vim) to `.vimrc` (macOS/Linux) or `_vimrc` (Windows).
 ###### Windows (PowerShell)
 
 ```
-iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |`
+iwr -useb https://ghproxy.com/https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |`
     ni $HOME/vimfiles/autoload/plug.vim -Force
 ```

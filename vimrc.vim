@@ -156,8 +156,8 @@ if executable('oj')
     let l:cur_buf_dir = expand('%:h')
     let l:sample_file_dir = l:cur_buf_dir . '/test'
     let l:compiler = 'g++'
-    if executable('g++-11')
-      let l:compiler = 'g++-11'
+    if executable('g++-12')
+      let l:compiler = 'g++-12'
     endif
     let l:test_command = printf(l:compiler . ' -DONLINE_JUDGE -DLOCAL_TEST %s && oj test -d %s -t 4',l:cur_buf_cpp, l:sample_file_dir)
     return l:test_command
@@ -194,8 +194,8 @@ endif
 " Ale
 let g:ale_linters = {'cpp': ['cc']}
 
-if executable('g++-11')
-  let g:ale_cpp_cc_executable = 'g++-11' 
+if executable('g++-12')
+  let g:ale_cpp_cc_executable = 'g++-12' 
 else
   let g:ale_cpp_cc_executable = 'g++' 
 endif

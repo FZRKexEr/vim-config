@@ -8,6 +8,7 @@ if(has('mac') || has('unix'))
 endif
 
 call plug#begin()
+  Plug 'wakatime/vim-wakatime'
   Plug 'thaerkh/vim-workspace'
   Plug 'aperezdc/vim-template'
   Plug 'skywind3000/vim-auto-popmenu'
@@ -87,8 +88,8 @@ function! CodeRunner()
     let l:cmd = {}
     let l:cmd['cpp'] = " -DLOCAL -std=c++17 -Wall -O2 \"$(VIM_FILEPATH)\" && "
 
-    if executable('g++-11')
-      let l:cmd['cpp'] = 'g++-11' . l:cmd['cpp']
+    if executable('g++-12')
+      let l:cmd['cpp'] = 'g++-12' . l:cmd['cpp']
     else
       let l:cmd['cpp'] = 'g++' . l:cmd['cpp']
     endif

@@ -111,8 +111,6 @@ function! CodeRunner()
 
     if has_key(cmd, &filetype)
       execute l:run . l:cmd[&filetype]
-    else
-      echo 'Unsupported language'
     endif
   else
     echo 'On windows, it can only be compiled and run in gvim'

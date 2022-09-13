@@ -15,7 +15,7 @@ And some things I like.
 
 ## The Basic
 
-VIM configuration without plug-ins (Windows GVIM only). Just copy [basic.vim](./basic.vim).
+VIM configuration without plug-ins (Windows GVIM only, for XCPC). Just copy [basic.vim](./basic.vim).
 
 ## Install
 

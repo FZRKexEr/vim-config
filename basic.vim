@@ -1,4 +1,4 @@
-" 9 lines vimrc for XCPC !
+" 10 lines vimrc for XCPC !
 " Created by LiZnB
 set nu et cindent wrap hls hid
 set ts=2 sts=2 shiftwidth=2

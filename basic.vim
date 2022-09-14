@@ -9,3 +9,4 @@ fu! Run()
   silent exe 'w'
   exe '!g++ % -std=c++17 -Wall -O2 && a.exe'
 endf
+set guifont=Fixedsys:h18

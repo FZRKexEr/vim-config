@@ -86,7 +86,7 @@ function! CodeRunner()
     silent execute 'w'
     let l:run = 'AsyncRun -mode=term -pos=right -save=1 '
     let l:cmd = {}
-    let l:cmd['cpp'] = " -DLOCAL -std=c++17 -Wall -O2 \"$(VIM_FILEPATH)\" && "
+    let l:cmd['cpp'] = " -DLOCAL -std=c++17 -Wall -Wextra -Wshadow -O2 \"$(VIM_FILEPATH)\" && "
 
     if executable('g++-12')
       let l:cmd['cpp'] = 'g++-12' . l:cmd['cpp']
@@ -193,13 +193,12 @@ endif
 let g:ale_linters = {'cpp': ['cc']}
 
 if executable('g++-12')
-  let g:ale_cpp_cc_executable = 'g++-12' 
+  let g:ale_cpp_cc_executable = 'g++-12'
 else
   let g:ale_cpp_cc_executable = 'g++' 
 endif
 
-let g:ale_cpp_cc_options = '-DLOCAL -std=c++17 -Wall -O2'
-let g:ale_cpp_cppcheck_options = '-DLOCAL -std=c++17 -Wall -O2'
+let g:ale_cpp_cc_options = '-DLOCAL -std=c++17 -Wall -Wextra -Wshadow -O2'
 
 " buffer and windows
 nnoremap <S-l> :bn<CR>
